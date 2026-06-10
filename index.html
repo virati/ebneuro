@@ -146,37 +146,79 @@
             return points;
         }
 
-        // East Bay silhouette (right hemisphere) - stylized coastline
+        // East Bay silhouette (right hemisphere) - shoreline edge of the East Bay
+        // Oriented: north=top, west (bay side)=left, east (hills)=right
         function getEastBayPoints(count, scale, offsetX, offsetY) {
             const points = [];
-            // Approximate the East Bay shoreline shape
+            // Detailed East Bay shoreline from Richmond to Fremont
+            // x = west-east (negative = toward bay), y = north-south (negative = north)
             const coastline = [
-                { x: 0.0, y: -1.0 },   // Richmond top
-                { x: 0.15, y: -0.85 },
-                { x: 0.25, y: -0.7 },   // El Cerrito
-                { x: 0.2, y: -0.55 },
-                { x: 0.3, y: -0.4 },    // Berkeley
-                { x: 0.35, y: -0.25 },
-                { x: 0.3, y: -0.1 },    // Emeryville
-                { x: 0.25, y: 0.0 },    // Oakland inner harbor
-                { x: 0.35, y: 0.1 },
-                { x: 0.4, y: 0.25 },    // Alameda
-                { x: 0.35, y: 0.4 },
-                { x: 0.3, y: 0.55 },    // San Leandro
-                { x: 0.2, y: 0.7 },
-                { x: 0.15, y: 0.85 },   // Hayward
-                { x: 0.0, y: 1.0 },     // Fremont
-                // Inland return (hills)
-                { x: -0.2, y: 0.9 },
-                { x: -0.35, y: 0.7 },
-                { x: -0.4, y: 0.5 },
-                { x: -0.38, y: 0.3 },
-                { x: -0.35, y: 0.1 },
-                { x: -0.4, y: -0.1 },   // Hills
-                { x: -0.38, y: -0.3 },
-                { x: -0.35, y: -0.5 },
-                { x: -0.3, y: -0.7 },
-                { x: -0.2, y: -0.9 },
+                // --- Richmond / Point Richmond ---
+                { x: -0.05, y: -1.0 },
+                { x: 0.10, y: -0.95 },  // Richmond Point juts west
+                { x: 0.15, y: -0.88 },
+                { x: 0.05, y: -0.82 },  // pull back into Richmond inner harbor
+                { x: -0.02, y: -0.78 },
+                // --- El Cerrito / Albany ---
+                { x: 0.08, y: -0.72 },
+                { x: 0.12, y: -0.65 },
+                { x: 0.15, y: -0.58 },  // Albany Bulb protrusion
+                { x: 0.20, y: -0.54 },
+                { x: 0.15, y: -0.50 },
+                // --- Berkeley Marina ---
+                { x: 0.18, y: -0.45 },
+                { x: 0.25, y: -0.40 },  // Berkeley Marina juts out
+                { x: 0.28, y: -0.35 },
+                { x: 0.22, y: -0.30 },
+                { x: 0.15, y: -0.25 },
+                // --- Emeryville ---
+                { x: 0.18, y: -0.18 },
+                { x: 0.20, y: -0.12 },
+                // --- Oakland / Jack London ---
+                { x: 0.15, y: -0.05 },
+                { x: 0.10, y: 0.0 },    // Oakland inner harbor indent
+                { x: 0.05, y: 0.05 },
+                { x: 0.02, y: 0.10 },   // deep harbor cut
+                { x: 0.08, y: 0.15 },
+                // --- Alameda island ---
+                { x: 0.20, y: 0.12 },
+                { x: 0.30, y: 0.14 },   // Alameda western tip
+                { x: 0.32, y: 0.20 },
+                { x: 0.28, y: 0.25 },
+                { x: 0.18, y: 0.28 },   // Alameda south shore
+                { x: 0.10, y: 0.30 },
+                // --- San Leandro Bay ---
+                { x: 0.05, y: 0.35 },
+                { x: 0.02, y: 0.40 },   // Bay Farm Island
+                { x: 0.08, y: 0.45 },
+                { x: 0.12, y: 0.50 },
+                // --- San Leandro / Hayward shoreline ---
+                { x: 0.10, y: 0.55 },
+                { x: 0.08, y: 0.62 },
+                { x: 0.05, y: 0.68 },   // marshlands
+                { x: 0.03, y: 0.75 },
+                { x: 0.00, y: 0.82 },
+                // --- Union City / Fremont ---
+                { x: -0.03, y: 0.88 },
+                { x: -0.05, y: 0.95 },
+                { x: -0.08, y: 1.0 },   // Fremont / south tip
+
+                // --- Inland return (East Bay Hills) ---
+                { x: -0.25, y: 0.95 },
+                { x: -0.35, y: 0.85 },  // Mission Peak area
+                { x: -0.40, y: 0.70 },
+                { x: -0.42, y: 0.55 },
+                { x: -0.40, y: 0.40 },  // Hayward hills
+                { x: -0.38, y: 0.25 },
+                { x: -0.40, y: 0.10 },
+                { x: -0.42, y: -0.05 }, // Oakland Hills
+                { x: -0.45, y: -0.20 }, // Grizzly Peak
+                { x: -0.42, y: -0.35 },
+                { x: -0.40, y: -0.50 }, // Tilden Park
+                { x: -0.38, y: -0.65 },
+                { x: -0.35, y: -0.78 }, // Wildcat Canyon
+                { x: -0.28, y: -0.88 },
+                { x: -0.18, y: -0.95 },
             ];
 
             const totalSegments = coastline.length;
