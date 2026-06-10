@@ -155,19 +155,19 @@
             const coastline = [
                 // --- Richmond / Point Richmond ---
                 { x: -0.05, y: -1.0 },
-                { x: 0.10, y: -0.95 },  // Richmond Point juts west
+                { x: 0.10, y: -0.95 },
                 { x: 0.15, y: -0.88 },
-                { x: 0.05, y: -0.82 },  // pull back into Richmond inner harbor
+                { x: 0.05, y: -0.82 },
                 { x: -0.02, y: -0.78 },
                 // --- El Cerrito / Albany ---
                 { x: 0.08, y: -0.72 },
                 { x: 0.12, y: -0.65 },
-                { x: 0.15, y: -0.58 },  // Albany Bulb protrusion
+                { x: 0.15, y: -0.58 },
                 { x: 0.20, y: -0.54 },
                 { x: 0.15, y: -0.50 },
                 // --- Berkeley Marina ---
                 { x: 0.18, y: -0.45 },
-                { x: 0.25, y: -0.40 },  // Berkeley Marina juts out
+                { x: 0.25, y: -0.40 },
                 { x: 0.28, y: -0.35 },
                 { x: 0.22, y: -0.30 },
                 { x: 0.15, y: -0.25 },
@@ -176,50 +176,71 @@
                 { x: 0.20, y: -0.12 },
                 // --- Oakland / Jack London ---
                 { x: 0.15, y: -0.05 },
-                { x: 0.10, y: 0.0 },    // Oakland inner harbor indent
+                { x: 0.10, y: 0.0 },
                 { x: 0.05, y: 0.05 },
-                { x: 0.02, y: 0.10 },   // deep harbor cut
+                { x: 0.02, y: 0.10 },
                 { x: 0.08, y: 0.15 },
                 // --- Alameda island ---
                 { x: 0.20, y: 0.12 },
-                { x: 0.30, y: 0.14 },   // Alameda western tip
+                { x: 0.30, y: 0.14 },
                 { x: 0.32, y: 0.20 },
                 { x: 0.28, y: 0.25 },
-                { x: 0.18, y: 0.28 },   // Alameda south shore
+                { x: 0.18, y: 0.28 },
                 { x: 0.10, y: 0.30 },
                 // --- San Leandro Bay ---
                 { x: 0.05, y: 0.35 },
-                { x: 0.02, y: 0.40 },   // Bay Farm Island
+                { x: 0.02, y: 0.40 },
                 { x: 0.08, y: 0.45 },
                 { x: 0.12, y: 0.50 },
                 // --- San Leandro / Hayward shoreline ---
                 { x: 0.10, y: 0.55 },
                 { x: 0.08, y: 0.62 },
-                { x: 0.05, y: 0.68 },   // marshlands
+                { x: 0.05, y: 0.68 },
                 { x: 0.03, y: 0.75 },
                 { x: 0.00, y: 0.82 },
                 // --- Union City / Fremont ---
                 { x: -0.03, y: 0.88 },
                 { x: -0.05, y: 0.95 },
-                { x: -0.08, y: 1.0 },   // Fremont / south tip
+                { x: -0.08, y: 1.0 },
 
                 // --- Inland return (East Bay Hills) ---
                 { x: -0.25, y: 0.95 },
-                { x: -0.35, y: 0.85 },  // Mission Peak area
+                { x: -0.35, y: 0.85 },
                 { x: -0.40, y: 0.70 },
                 { x: -0.42, y: 0.55 },
-                { x: -0.40, y: 0.40 },  // Hayward hills
+                { x: -0.40, y: 0.40 },
                 { x: -0.38, y: 0.25 },
                 { x: -0.40, y: 0.10 },
-                { x: -0.42, y: -0.05 }, // Oakland Hills
-                { x: -0.45, y: -0.20 }, // Grizzly Peak
+                { x: -0.42, y: -0.05 },
+                { x: -0.45, y: -0.20 },
                 { x: -0.42, y: -0.35 },
-                { x: -0.40, y: -0.50 }, // Tilden Park
+                { x: -0.40, y: -0.50 },
                 { x: -0.38, y: -0.65 },
-                { x: -0.35, y: -0.78 }, // Wildcat Canyon
+                { x: -0.35, y: -0.78 },
                 { x: -0.28, y: -0.88 },
                 { x: -0.18, y: -0.95 },
             ];
+
+            // City marker positions (approximate centers)
+            const cities = [
+                { x: 0.02, y: -0.90, name: 'Richmond' },
+                { x: -0.10, y: -0.70, name: 'El Cerrito' },
+                { x: -0.05, y: -0.40, name: 'Berkeley' },
+                { x: 0.10, y: -0.15, name: 'Emeryville' },
+                { x: -0.10, y: 0.02, name: 'Oakland' },
+                { x: 0.25, y: 0.20, name: 'Alameda' },
+                { x: -0.10, y: 0.50, name: 'San Leandro' },
+                { x: -0.15, y: 0.70, name: 'Hayward' },
+                { x: -0.15, y: 0.92, name: 'Fremont' },
+            ];
+
+            for (const city of cities) {
+                points.push({
+                    x: offsetX + scale * city.x,
+                    y: offsetY + scale * city.y,
+                    city: city.name
+                });
+            }
 
             const totalSegments = coastline.length;
             for (let i = 0; i < count; i++) {
@@ -312,6 +333,7 @@
 
             // Create nodes for East Bay hemisphere
             for (const p of ebAll) {
+                const isCity = !!p.city;
                 nodes.push({
                     x: p.x,
                     y: p.y,
@@ -319,12 +341,13 @@
                     baseY: p.y,
                     vx: 0,
                     vy: 0,
-                    radius: 1.5 + Math.random() * 1.5,
-                    brightness: 0.3 + Math.random() * 0.3,
+                    radius: isCity ? 5 + Math.random() * 2 : 1.5 + Math.random() * 1.5,
+                    brightness: isCity ? 0.8 + Math.random() * 0.2 : 0.3 + Math.random() * 0.3,
                     phase: Math.random() * Math.PI * 2,
-                    speed: 0.002 + Math.random() * 0.003,
-                    drift: 8 + Math.random() * 12,
-                    side: 'eastbay'
+                    speed: isCity ? 0.001 : 0.002 + Math.random() * 0.003,
+                    drift: isCity ? 3 : 8 + Math.random() * 12,
+                    side: 'eastbay',
+                    city: p.city || null
                 });
             }
 
@@ -434,9 +457,11 @@
                     }
                 }
 
-                // Color: brain nodes white, cc nodes subtle blue
+                // Color: city nodes red, cc nodes blue, others white
                 let r = 255, g = 255, b = 255;
-                if (node.side === 'cc') {
+                if (node.city) {
+                    r = 220; g = 50; b = 50;
+                } else if (node.side === 'cc') {
                     r = 120; g = 180; b = 255;
                 }
 
@@ -444,6 +469,14 @@
                 ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${brightness})`;
                 ctx.fill();
+
+                // City label
+                if (node.city) {
+                    ctx.font = '11px Helvetica Neue, Arial, sans-serif';
+                    ctx.fillStyle = `rgba(220, 50, 50, ${brightness * 0.8})`;
+                    ctx.textAlign = 'left';
+                    ctx.fillText(node.city, node.x + node.radius + 4, node.y + 4);
+                }
             }
 
             requestAnimationFrame(animate);
