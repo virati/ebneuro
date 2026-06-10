@@ -315,11 +315,13 @@
         const waveDelay = 2000;
 
         function getConnectionDistance(nodeA, nodeB) {
-            // Same side: connect more readily
-            if (nodeA.side === nodeB.side) return 60;
+            // Left hemisphere (brain): no connections
+            if (nodeA.side === 'brain' && nodeB.side === 'brain') return 0;
+            // Right hemisphere (East Bay): fully connected
+            if (nodeA.side === 'eastbay' && nodeB.side === 'eastbay') return 120;
             // CC connects to both sides
             if (nodeA.side === 'cc' || nodeB.side === 'cc') return 80;
-            // Cross-hemisphere only through CC
+            // Cross-hemisphere
             return 30;
         }
 
